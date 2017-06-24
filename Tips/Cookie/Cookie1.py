@@ -5,6 +5,7 @@ __author__ = 'ZYSzys'
 
 import urllib2
 import cookielib
+
 #声明一个CookieJar对象实例来保存cookie
 cookie = cookielib.CookieJar()
 #利用urllib2库的HTTPCookieProcessor对象来创建cookie处理器
