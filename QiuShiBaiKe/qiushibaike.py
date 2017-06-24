@@ -1,5 +1,7 @@
+#!/usr/bin/env python
 #-*- coding: utf-8 -*-
-#__author__  ZYSzys
+
+__author__ = 'ZYSzys'
 import urllib
 import urllib2
 import re
