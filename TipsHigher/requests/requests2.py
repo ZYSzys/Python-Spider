@@ -5,6 +5,7 @@ __author__ = 'ZYSzys'
 
 import requests
 
+#设置代理
 proxies = {
 	"https": "http://41.118.132.69:4433"
 }
