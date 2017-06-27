@@ -37,6 +37,8 @@ print r.text
 s = requests.Session()
 #设置cookies
 s.get('http://httpbin.org/cookies/set/sessioncookie/123456789')
+#设置headers变量
+s.headers.update({'x-test':'true'})
 #获得cookies
-r = s.get("http://httpbin.org/cookies")
+r = s.get("http://httpbin.org/headers", headers = {'x-test':None})#若与先前设置的headers变量有冲突会覆盖，设为None则没有全局变量了
 print(r.text)
