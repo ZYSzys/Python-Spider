@@ -14,6 +14,7 @@ headers = {'User-Agent': user_agent}
 request = urllib2.Request(url, headers = headers)#发送请求
 response = urllib2.urlopen(request)#得到响应
 content = response.read()#获取内容
+content = re.sub(re.compile('<br/>'), '', content)
 pattern = re.compile('<span>(.*?)</span>.*?<span.*?><i.*?>(.*?)</i>(.*?)</span>', re.S)#模式(使用正则表达式)
 items = re.findall(pattern, content)#匹配模式并查找获取有用的内容
 f = open('/Users/zhangbeibei/Desktop/PSpider.txt', 'w')#保存在目标文件中('***'为文件路径)
@@ -24,7 +25,7 @@ for i in items:
         cnt = cnt + 1
         f.write(str(cnt)+'. '+i[0])
         f.write('\n')
-        f.write('\t'+i[1]+i[2])
+        f.write('-'*4+i[1]+i[2])
         f.write('\n\n')
 
 f.close()
