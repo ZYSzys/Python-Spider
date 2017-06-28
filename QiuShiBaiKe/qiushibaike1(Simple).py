@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 
 __author__ = 'ZYSzys'
+
 import urllib
 import urllib2
 import re
@@ -15,7 +16,7 @@ response = urllib2.urlopen(request)#得到响应
 content = response.read()#获取内容
 pattern = re.compile('<span>(.*?)</span>.*?<span.*?><i.*?>(.*?)</i>(.*?)</span>', re.S)#模式(使用正则表达式)
 items = re.findall(pattern, content)#匹配模式并查找获取有用的内容
-f = open('/Users/zhangbeibei/Desktop/ppp.txt', 'w')#保存在目标文件中('***'为文件路径)
+f = open('/Users/zhangbeibei/Desktop/PSpider.txt', 'w')#保存在目标文件中('***'为文件路径)
 cnt = 0
 for i in items:
     haveImg = re.search('img', i[0])
