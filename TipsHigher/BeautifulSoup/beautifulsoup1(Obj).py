@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 r = requests.get('https://www.patest.cn/contests/pat-a-practise/1004')
 html = r.content
+#创建beautifulsoup对象
 soup = BeautifulSoup(html)
 
 #格式化输出内容
@@ -22,12 +23,25 @@ print soup.a
 print soup.p
 print type(soup.p)
 
-#Tag的name属性
+#四大对象种类
+
+
+#Tag:
+#Tag的name属性: 标签本身的名称
 print soup.name
 print soup.head.name
-#Tag的attrs属性
-print soup.div.attrs
+#Tag的attrs属性: 得到标签的所有属性
+print soup.script.attrs
+print soup.script['src']
+print soup.script.get('type')
+#更改 soup.script['src'] = 'pic'
+#删除 del soup.script['type']
 
-#搜索当前tag的所有tag子节点,并判断是否符合过滤器的条件
-print soup.find_all(id='problemContent')
-print soup.find_all('p')
+#NavigableString:
+#.string获取标签内部的文字
+print soup.title.string
+print type(soup.title.string)
+
+#BeautifulSoup: 是一个特殊的Tag
+
+#Comment: 是一个特殊的NavigableString对象
