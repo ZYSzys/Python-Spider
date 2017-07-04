@@ -6,6 +6,8 @@ __author__ = 'ZYSzys'
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+from bs4 import BeautifulSoup
+import re
 
 #账号密码:
 usr_name = '201605070523'
@@ -33,10 +35,15 @@ code.send_keys(vercode)
 account.send_keys(Keys.RETURN)
 time.sleep(5)
 
-print driver.page_source
+source = driver.page_source
+pattern = re.compile('<span id="xhxm">(.*?)</span>', re.S)
+name = re.findall(pattern, source)
+print name[0]
+
+now_url = driver.current_url
+print now_url
+#print source
 driver.close()
-
-
 
 
 
