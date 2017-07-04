@@ -9,9 +9,9 @@ import time
 from bs4 import BeautifulSoup
 import re
 
-#账号密码:
-usr_name = '201605070523'
-pass_word = 'xx19980903'
+#学号密码:
+usr_name = '2016........'
+pass_word = '........'
 
 #浏览器驱动:
 driver = webdriver.Chrome()

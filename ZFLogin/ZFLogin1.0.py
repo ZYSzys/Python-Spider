@@ -15,9 +15,9 @@ from PIL import Image
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
-uesr = '201605070523'
-passw = 'xx19980903'
+#学号密码
+uesr = '2016........'
+passw = '.......'
 
 s = requests.session()
 url = 'http://115.236.84.162/default5.aspx'
