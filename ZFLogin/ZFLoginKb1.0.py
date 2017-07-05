@@ -44,9 +44,9 @@ now_url = driver.current_url
 print now_url
 #print source
 
-kburl = 'http://115.236.84.162/xskbcx.aspx?xh=201605070523&xm=%D5%C2%D3%C0%CA%A4&gnmkdm=N121603'
+kburl = 'http://115.236.84.162/xskbcx.aspx?xh='+usr_name+'&xm=%D5%C2%D3%C0%CA%A4&gnmkdm=N121603'
 headers = {
-	'Referer':'http://115.236.84.162/xs_main.aspx?xh=201605070523',
+	'Referer':'http://115.236.84.162/xs_main.aspx?xh='+usr_name,
 	'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36',
 }
 driver.get(kburl)
