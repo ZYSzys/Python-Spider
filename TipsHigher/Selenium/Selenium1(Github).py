@@ -8,8 +8,8 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 #账号密码:
-usr_name = '1220736035@qq.com'
-pass_word = 'xx19980903'
+usr_name = '..........@...com'
+pass_word = '..........'
 
 #浏览器驱动:
 driver = webdriver.Chrome()
