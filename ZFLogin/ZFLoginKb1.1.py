@@ -11,7 +11,7 @@ import re
 import urllib
 
 class Tool:
-	rmtb = re.compile('<br>')
+	rmtb = re.compile('<br />|</br>')
 	rmtime2 = re.compile('<td align="Center" width="7%">.*?</td>')
 	rmtime3 = re.compile('<td class="noprint" align="Center".*?>.*?</td>')
 	'''
@@ -22,6 +22,7 @@ class Tool:
 		x = re.sub(self.rmtb, '--', x)
 		x = re.sub(self.rmtime2, '\n', x)
 		x = re.sub(self.rmtime3, '', x)
+
 		'''
 		x = re.sub(self.rmtime1, '', x)
 		x = re.sub(self.rmk, '', x)
@@ -30,8 +31,8 @@ class Tool:
 
 
 #账号密码:
-usr_name = '2016........'
-pass_word = '........'
+usr_name = '201605070523'
+pass_word = 'xx19980903'
 
 #浏览器驱动:
 driver = webdriver.Chrome()
@@ -78,16 +79,20 @@ driver.find_element_by_link_text('here').click()
 #print soup.title.string
 
 html = driver.page_source
-pattern = re.compile('<td align="Center" rowspan="2" width="7%">(.*?)</td>', re.S)
+pattern = re.compile('<td.*?align="Center".*?>(.*?)</td>', re.S)
 contents = re.findall(pattern, html)
 tool = Tool()
 for i in contents:
-	print tool.replace(i)
+	if u'星期' in i:
+		continue
+	else:
+		cont = tool.replace(i)
+		print cont
 
 #print tool.replace(content[0])
 #print content[0]
 
-driver.close()
+#driver.close()
 
 
 
