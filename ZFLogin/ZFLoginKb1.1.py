@@ -69,9 +69,11 @@ headers = {
 driver.get(kburl)
 driver.find_element_by_link_text('here').click()
 
-#soup = BeautifulSoup(driver.page_source)
-#print soup.title.string
+#将课表存储在ZFKB.txt中
+f = open('/Users/zhangbeibei/Desktop/ZFKB.txt', 'w')#保存在目标文件中('***'为文件路径)
 
+soup = BeautifulSoup(driver.page_source)
+#f.write(soup.title.string)
 
 html = driver.page_source
 pattern = re.compile('<td.*?align="Center".*?>(.*?)</td>', re.S)
@@ -81,11 +83,18 @@ for i in contents:
 	if u'星期' in i:
 		continue
 	else:
-		cont = tool.replace(i)
-		print cont
+		con = tool.replace(i)
+		f.write(con.encode('utf-8')+'\n')
 
-#关闭浏览器
+#关闭文件和浏览器
+f.close()
 driver.close()
+
+
+
+
+
+
 
 
 
