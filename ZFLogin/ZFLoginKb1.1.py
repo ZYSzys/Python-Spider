@@ -12,23 +12,13 @@ import urllib
 
 class Tool:
 	rmtb = re.compile('<br />|</br>')
-	rmtime2 = re.compile('<td align="Center" width="7%">.*?</td>')
-	rmtime3 = re.compile('<td class="noprint" align="Center".*?>.*?</td>')
-	'''
-	rmtime1 = re.compile('<td colspan="2".*?>.*?</td>')
-	rmk = re.compile('<td align="Center"></td>')
-	'''
+	rmtime1 = re.compile('<td align="Center" width="7%">.*?</td>')
+	rmtime2 = re.compile('<td class="noprint" align="Center".*?>.*?</td>')
 	def replace(self, x):
 		x = re.sub(self.rmtb, '--', x)
-		x = re.sub(self.rmtime2, '\n', x)
-		x = re.sub(self.rmtime3, '', x)
-
-		'''
-		x = re.sub(self.rmtime1, '', x)
-		x = re.sub(self.rmk, '', x)
-		'''
+		x = re.sub(self.rmtime1, '\n', x)
+		x = re.sub(self.rmtime2, '', x)
 		return x.strip()
-
 
 #账号密码:
 usr_name = '201605070523'
@@ -48,24 +38,28 @@ password = driver.find_element_by_name('TextBox2')
 password.clear()
 password.send_keys(pass_word)
 
+#手动输入验证码
 vercode = raw_input('vercode:')
 code = driver.find_element_by_name('TextBox3')
 code.clear()
 code.send_keys(vercode)
 
+#登录
 account.send_keys(Keys.RETURN)
 time.sleep(5)
 
+#通过re获取姓名
 source = driver.page_source
 pattern = re.compile('<span id="xhxm">(.*?)</span>', re.S)
 name = re.findall(pattern, source)
 xm = name[0][:3]
 print xm
 
+#登录进去后所在网站
 now_url = driver.current_url
 print now_url
-#print source
 
+#将姓名编码成'gb2312'的
 urlxm = urllib.quote_plus(str(xm.encode('gb2312')))
 kburl = 'http://115.236.84.162/xskbcx.aspx?xh='+usr_name+'&xm='+urlxm+'&gnmkdm=N121603'
 headers = {
@@ -78,6 +72,7 @@ driver.find_element_by_link_text('here').click()
 #soup = BeautifulSoup(driver.page_source)
 #print soup.title.string
 
+
 html = driver.page_source
 pattern = re.compile('<td.*?align="Center".*?>(.*?)</td>', re.S)
 contents = re.findall(pattern, html)
@@ -89,10 +84,8 @@ for i in contents:
 		cont = tool.replace(i)
 		print cont
 
-#print tool.replace(content[0])
-#print content[0]
-
-#driver.close()
+#关闭浏览器
+driver.close()
 
 
 
