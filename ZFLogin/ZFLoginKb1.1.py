@@ -79,12 +79,16 @@ html = driver.page_source
 pattern = re.compile('<td.*?align="Center".*?>(.*?)</td>', re.S)
 contents = re.findall(pattern, html)
 tool = Tool()
+cnt = 1
 for i in contents:
 	if u'星期' in i:
 		continue
-	else:
+	elif u'第' in i:
 		con = tool.replace(i)
-		f.write(con.encode('utf-8')+'\n')
+		f.write('\t'+str(cnt)+':'+con.encode('utf-8')+'\n')
+		cnt += 1
+	else:
+		continue
 
 #关闭文件和浏览器
 f.close()
