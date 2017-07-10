@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /blocks/
+Disallow: /blockcache/
+Disallow: /cache/
+Disallow: /compiled/
+Disallow: /configs/
+Disallow: /scripts/
