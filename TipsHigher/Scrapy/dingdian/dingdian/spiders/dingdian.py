@@ -26,3 +26,5 @@ class Myspider(scrapy.Spider):
 
 	def parse(self, response):
 		print response.text
+
+	
