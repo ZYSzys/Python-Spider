@@ -9,8 +9,10 @@ import os
 import sys
 import urllib
 import urllib2
+import cookielib
 from lxml import etree
 from PIL import Image
+from bs4 import BeautifulSoup
 
 class WHO:
 	def __init__(self, user, pswd):
@@ -62,7 +64,7 @@ class ZAFU:
 			"txtSecretCode": code,
    		    "RadioButtonList1": RadioButtonList1,
 		    "Button1": "", 
- 		    "lbLanguage": ""             
+ 		    "lbLanguage": ""        
 		}
 		loginres = self.session.post(url, data=data)
 		logcont = loginres.text
@@ -70,13 +72,11 @@ class ZAFU:
 		res = re.findall(pattern, logcont)
 		if res[0][17:29] == self.student.user:
 			print 'Login succeed!'
-
 		pattern = re.compile('<span id="xhxm">(.*?)</span>')
 		xhxm = re.findall(pattern, logcont)
 		name = xhxm[0][:3]
 		return name
 		
-
 	def GetClass(self):
 		name = self.Login()
 		urlname = urllib.quote_plus(str(name.encode('gb2312')))
@@ -84,7 +84,6 @@ class ZAFU:
 		kburl = self.baseurl + '/xskbcx.aspx?xh='+self.student.user+'&xm='+urlname+'&gnmkdm=N121603'
 		kbresponse = self.session.get(kburl)
 		kbcont = kbresponse.text
-		
 		f = open(os.getcwd()+'/ZFKB.txt', 'w')
 		pattern = re.compile('<td.*?align="Center".*?>(.*?)</td>', re.S)
 		contents = re.findall(pattern, kbcont)
@@ -99,15 +98,45 @@ class ZAFU:
  				cnt += 1
 			else:
 				continue
-		#关闭文件
+		#关闭文件和浏览器
 		f.close()
-
 		print 'Load class succeed!'
+		return True
+
+	#爬取失败，痛心！！
+	def GetGrade(self):
+		name = self.Login()
+		urlname = urllib.quote_plus(str(name.encode('gb2312')))
+		self.session.headers['Referer'] = self.baseurl + '/xs_main.aspx?xh=' + self.student.user
+		gradeurl = self.baseurl + '/xscjcx.aspx?xh='+self.student.user+'&xm='+urlname+'&gnmkdm=N121605'
+		
+		graderesponse = self.session.get(gradeurl)
+		
+		gradecont = graderesponse.content.decode("gb2312")
+		soup = BeautifulSoup(gradecont.decode("utf-8"))
+		__VIEWSTATE = soup.findAll(name="input")[2]["value"]
+		
+		self.session.headers['Referer'] = gradeurl
+		
+		data = {
+			"__EVENTTARGET":"",
+			"__EVENTARGUMENT":"",
+			"__VIEWSTATE":__VIEWSTATE,
+			"hidLanguage":"",
+			"ddlXN":"",
+			"ddlXQ": "",
+			"ddl_kcxz":"",
+			"btn_zcj" : u'历年成绩'.encode('gb2312', 'replace')
+		}
+		grares = self.session.post(gradeurl, data=data)
+		gracont = grares.text
+		print gradecont
 
 if __name__ == "__main__":
-	url = 'http://.........'  #教务网网站
-	user = '............'		#学号
-	pswd = '..........'			#密码
+	url = 'http://..........'
+	user = '2016........'
+	pswd = '..........'
 	who = WHO(user, pswd)
 	zafu = ZAFU(who, url)
-	zafu.GetClass()
+	#zafu.GetClass()
+	zafu.GetGrade()
