@@ -22,7 +22,7 @@ class WHO:
 class Tool:
 	rma = re.compile('<a href=.*?>|</a>')
 	rmtb = re.compile('<br />|</br>|<br>')
-	rmtr = re.compile('<td>|</td>|<tr>|</tr>|<tr class="alt">')
+	rmtr = re.compile('<td>|</td>|<tr>|</tr>|<tr class="alt">|<tr class="datelisthead">')
 	rmtime1 = re.compile('<td align="Center" width="7%">.*?</td>')
 	rmtime2 = re.compile('<td class="noprint" align="Center".*?>.*?</td>')
 	def replace(self, x):
@@ -34,7 +34,6 @@ class Tool:
 		return x.strip()
 
 class ZAFU:
-
 	def __init__(self, student, baseurl):
 		reload(sys)
 		sys.setdefaultencoding('utf-8')
@@ -79,13 +78,12 @@ class ZAFU:
 		pattern = re.compile('<span id="xhxm">(.*?)</span>')
 		xhxm = re.findall(pattern, logcont)
 		name = xhxm[0][:3]
-		return name
+		self.student.urlname = urllib.quote_plus(str(name.encode('gb2312')))
+		return True
 		
 	def GetClass(self):
-		name = self.Login()
-		urlname = urllib.quote_plus(str(name.encode('gb2312')))
 		self.session.headers['Referer'] = self.baseurl + '/xs_main.aspx?xh=' + self.student.user
-		kburl = self.baseurl + '/xskbcx.aspx?xh='+self.student.user+'&xm='+urlname+'&gnmkdm=N121603'
+		kburl = self.baseurl + '/xskbcx.aspx?xh='+self.student.user+'&xm='+self.student.urlname+'&gnmkdm=N121603'
 		kbresponse = self.session.get(kburl)
 		kbcont = kbresponse.text
 		f = open(os.getcwd()+'/ZFKB.txt', 'w')
@@ -102,16 +100,12 @@ class ZAFU:
  				cnt += 1
 			else:
 				continue
-		#关闭文件和浏览器
 		f.close()
 		print 'Load class succeed!'
-		return True
 
 	def GetGrade(self):
-		name = self.Login()
-		urlname = urllib.quote_plus(str(name.encode('gb2312')))
 		self.session.headers['Referer'] = self.baseurl + '/xs_main.aspx?xh=' + self.student.user
-		gradeurl = self.baseurl + '/xscjcx.aspx?xh='+self.student.user+'&xm='+urlname+'&gnmkdm=N121605'
+		gradeurl = self.baseurl + '/xscjcx.aspx?xh='+self.student.user+'&xm='+self.student.urlname+'&gnmkdm=N121605'
 		
 		graderesponse = self.session.get(gradeurl)
 		
@@ -136,13 +130,17 @@ class ZAFU:
 		pattern = re.compile('<table class="datelist".*?>(.*?)</table>', re.S)
 		items = re.findall(pattern, gracont)
 		tool = Tool()
-		print tool.replace(items[0].encode('utf-8'))
+		f = open(os.getcwd()+'/ZFKB.txt', 'a+')
+		f.write(tool.replace(items[0].encode('utf-8')))
+		f.close()
+		print 'Load grade succeed!'
 
 if __name__ == "__main__":
-	url = 'http://........'
+	url = 'http://............'
 	user = '2016........'
 	pswd = '..........'
 	who = WHO(user, pswd)
 	zafu = ZAFU(who, url)
-	#zafu.GetClass()
-	zafu.GetGrade()
+	if zafu.Login():
+		zafu.GetClass()
+		zafu.GetGrade()
