@@ -20,11 +20,15 @@ class WHO:
 		self.pswd = pswd
 
 class Tool:
+	rma = re.compile('<a href=.*?>|</a>')
 	rmtb = re.compile('<br />|</br>|<br>')
+	rmtr = re.compile('<td>|</td>|<tr>|</tr>|<tr class="alt">')
 	rmtime1 = re.compile('<td align="Center" width="7%">.*?</td>')
 	rmtime2 = re.compile('<td class="noprint" align="Center".*?>.*?</td>')
 	def replace(self, x):
+		x = re.sub(self.rma, '   ', x)
 		x = re.sub(self.rmtb, '---', x)
+		x = re.sub(self.rmtr, '  ', x)
 		x = re.sub(self.rmtime1, '\n', x)
 		x = re.sub(self.rmtime2, '', x)
 		return x.strip()
@@ -103,7 +107,6 @@ class ZAFU:
 		print 'Load class succeed!'
 		return True
 
-	#爬取失败，痛心！！
 	def GetGrade(self):
 		name = self.Login()
 		urlname = urllib.quote_plus(str(name.encode('gb2312')))
@@ -115,13 +118,13 @@ class ZAFU:
 		gradecont = graderesponse.content.decode("gb2312")
 		soup = BeautifulSoup(gradecont.decode("utf-8"))
 		__VIEWSTATE = soup.findAll(name="input")[2]["value"]
-		
+
 		self.session.headers['Referer'] = gradeurl
 		
 		data = {
 			"__EVENTTARGET":"",
 			"__EVENTARGUMENT":"",
-			"__VIEWSTATE":__VIEWSTATE,
+			"__VIEWSTATE": __VIEWSTATE,
 			"hidLanguage":"",
 			"ddlXN":"",
 			"ddlXQ": "",
@@ -130,10 +133,13 @@ class ZAFU:
 		}
 		grares = self.session.post(gradeurl, data=data)
 		gracont = grares.text
-		print gradecont
+		pattern = re.compile('<table class="datelist".*?>(.*?)</table>', re.S)
+		items = re.findall(pattern, gracont)
+		tool = Tool()
+		print tool.replace(items[0].encode('utf-8'))
 
 if __name__ == "__main__":
-	url = 'http://..........'
+	url = 'http://........'
 	user = '2016........'
 	pswd = '..........'
 	who = WHO(user, pswd)
