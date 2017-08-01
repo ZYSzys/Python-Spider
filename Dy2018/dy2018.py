@@ -12,9 +12,12 @@ url = raw_input("输入网址: ")
 res = requests.get(url)
 cont = res.content.decode('gb2312')
 
+soup = BeautifulSoup(cont)
+title = soup.title.string
+
 pattern = re.compile('<tbody>(.*?)</tbody>', re.S)
 items = re.findall(pattern, cont)
-f = open(os.getcwd()+'/MoviesRes.txt', 'w')
+f = open(os.getcwd()+'/'+title+'.txt', 'w')
 for i in items:
 	soup = BeautifulSoup(i)
 	ftp = soup.find_all("a")
