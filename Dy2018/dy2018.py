@@ -10,7 +10,7 @@ import os
 
 url = raw_input("输入网址: ") 
 res = requests.get(url)
-cont = res.content.decode('gb2312')
+cont = res.content.decode('gbk')
 
 soup = BeautifulSoup(cont)
 title = soup.title.string
