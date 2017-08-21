@@ -1,3 +1,6 @@
+#已失效，网站禁止盗链 _0.0_
+
+
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
