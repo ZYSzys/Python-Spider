@@ -48,8 +48,6 @@ def Getgrade(response):
 
 	return Grades
 
-
-
 class ZAFU:
 	def __init__(self, student, baseurl):
 		reload(sys)
@@ -109,15 +107,19 @@ class ZAFU:
 		f = open(os.getcwd()+'/ZFKB.txt', 'w')
 		f.write(u'本学期课表:'+'\n')
 		cnt = 1
-		for i in contents:
-			if u'星期' in i:
-				continue
-			elif u'第' in i:
-				con = tool.replace(i)
-				f.write('\t'+str(cnt)+':'+con.encode('utf-8')+'\n')
- 				cnt += 1
-			else:
-				continue
+		l = [u'周一', u'周二', u'周三', u'周四', u'周五', u'周六', u'周日']
+		for day in l:
+			for i in contents:
+				if u'星期' in i:
+					continue
+				elif u'第' in i:
+					if day in i:
+						con = tool.replace(i)
+						f.write(str(cnt)+':\t'+con.encode('utf-8')+'\n')
+ 						cnt += 1
+				else:
+					continue
+
 		f.close()
 		print 'Load class succeed!'
 
@@ -145,15 +147,22 @@ class ZAFU:
 		}
 		grares = self.session.post(gradeurl, data=data)
 		grades = Getgrade(grares)
+
+		totup = 0
+		totdown = 0
 		f = open(os.getcwd()+'/ZFKB.txt', 'a+')
-		f.write(u'历年成绩:'+'\n')		
+		f.write('\n\n\n'+u'历年成绩:'+'\n')		
 		for each in grades:
 			for one in each:
-				f.write(each[one]+'\t')
+				f.write('%-15s\t' % each[one])
 			f.write('\n')
+			totup = totup + float(each['gradePoint']) * float(each['credit'])
+			totdown = totdown + float(each['credit'])
 
+		f.write('\n\n\n'+u'平均绩点: '+'%.2f\t\t\t' % (totup / totdown) + u'总学分绩点: '+'%.2f\t\t\t' % totup + u'总学分: '+'%.2f\n' % totdown)
 		f.close()
 		print 'Load grade succeed!'
+		
 
 		'''
 		gracont = grares.text
