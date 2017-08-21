@@ -50,11 +50,11 @@ class mzitu():
 	#建立存储图片的文件夹
 	def mkdir(self, path):
 		path = path.strip()
-		isExist = os.path.exists(os.path.join('/Users/zhangbeibei/Desktop', path))
+		isExist = os.path.exists(os.path.join(os.getcwd(), path))
 		if not isExist:
 			print 'make a directory:'+path
-			os.makedirs(os.path.join('/Users/zhangbeibei/Desktop', path))
-			os.chdir(os.path.join('/Users/zhangbeibei/Desktop', path))
+			os.makedirs(os.path.join(os.getcwd(), path))
+			os.chdir(os.path.join(os.getcwd(), path))
 			return True
 		else:
 			print 'is Existed'
@@ -64,7 +64,7 @@ class mzitu():
 	def request(self, url):
 		headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'}
 		res = requests.session()
-		content = requests.get(url, headers=headers, timeout=10)
+		content = res.get(url, headers=headers, timeout=10)
 		return content
 
 
