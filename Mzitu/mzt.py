@@ -1,6 +1,3 @@
-#已失效，网站禁止盗链 _0.0_
-
-
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
@@ -25,7 +22,7 @@ class mzitu():
 				href = a['href']
 				self.html(href)
 				cnt += 1
-				if cnt > 4:
+				if cnt > 1:
 					break
 
 	#在主页中找到每个图片页面的url
@@ -65,7 +62,10 @@ class mzitu():
 			
 	#对url发送请求，获取内容
 	def request(self, url):
-		headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'}
+		headers = {
+			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36',
+			'Referer': 'http://www.mzitu.com/'
+			}
 		res = requests.session()
 		content = res.get(url, headers=headers, timeout=10)
 		return content
