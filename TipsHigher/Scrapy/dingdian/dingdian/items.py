@@ -10,31 +10,10 @@ import scrapy
 
 class DingdianItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
     name = scrapy.Field()
-
     author = scrapy.Field()
-
     novelurl = scrapy.Field()
-
     serialstatus = scrapy.Field()
-
     serialnumber = scrapy.Field()
-
     category = scrapy.Field()
-
     name_id = scrapy.Field()
-
-class DcontentItem(scrapy.Item):
-	
-	id_name = scrapy.Field()
-
-	chaptercontent = scrapy.Field()
-
-	num = scrapy.Field()
-
-	chapterurl = scrapy.Field()
-
-	chaptername = scrapy.Field()
-
-	
